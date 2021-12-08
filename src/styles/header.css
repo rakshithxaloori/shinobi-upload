@@ -1,4 +1,6 @@
 .Header {
+  display: flex;
+  flex-direction: row;
   background-color: black;
   position: absolute;
   top: 0;
@@ -8,9 +10,8 @@
 
 .Header-link {
   display: flex;
-  width: 100px;
-  text-decoration: none;
   flex-direction: row;
+  text-decoration: none;
   align-items: center;
 }
 
@@ -19,4 +20,16 @@
   padding-top: 0px;
   font-size: 24px;
   font-weight: bold;
+}
+
+.Header-user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Header-user-username {
+  color: white;
+  padding-top: 0px;
+  font-size: 18px;
 }
