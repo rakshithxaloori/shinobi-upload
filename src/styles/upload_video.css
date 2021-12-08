@@ -1,0 +1,44 @@
+.Upload {
+  align-items: center;
+  justify-content: center;
+}
+
+.Upload-btn-grp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Upload-btn {
+  display: flex;
+  flex-direction: row;
+  background-color: lightseagreen;
+  color: white;
+  height: 48px;
+  width: 180px;
+  border-radius: 24px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.Btn-Upload {
+  background-color: white;
+  color: lightseagreen;
+  border-color: lightseagreen;
+  border-width: 3px;
+}
+
+.Upload-icon {
+  font-size: 18px;
+  margin-right: 6px;
+}
+
+.Upload-btn-text {
+  font-size: 18px;
+  font-weight: bold;
+}

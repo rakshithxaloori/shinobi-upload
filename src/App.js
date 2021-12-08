@@ -65,7 +65,6 @@ function App() {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       const userToken = getUser()?.token;
-      console.log("userToken", userToken);
 
       try {
         // After restoring token, we may need to validate it

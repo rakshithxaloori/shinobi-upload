@@ -6,7 +6,7 @@ import UserContext from "./userContext";
 const Header = () => {
   const context = React.useContext(UserContext);
   const { user } = context;
-  console.log("HEADER user", user);
+
   return (
     <div className="Header">
       <a className="Header-link" href="/">
@@ -23,7 +23,7 @@ const Header = () => {
           <img
             className="Header-user-picture"
             src={user.picture}
-            height={40}
+            height={24}
             style={{ borderRadius: 20 }}
             alt={user.username}
           />
