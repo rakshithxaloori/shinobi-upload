@@ -1,6 +1,11 @@
 .Upload {
   align-items: center;
   justify-content: center;
+  margin-bottom: 100px;
+}
+
+.Upload-title {
+  margin-bottom: 20px;
 }
 
 .Upload-btn-grp {
@@ -21,7 +26,7 @@
   cursor: pointer;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -41,4 +46,8 @@
 .Upload-btn-text {
   font-size: 18px;
   font-weight: bold;
+}
+
+.Upload-progress {
+  margin-top: 30px;
 }

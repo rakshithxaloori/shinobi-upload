@@ -9,12 +9,10 @@ const BrowseVideo = ({ setVideoInfo }) => {
 
   const handleClick = () => {
     setDisable(true);
-    console.log("handleClick");
     hiddenFileInput.current.click();
   };
 
   const handleChange = (event) => {
-    console.log("handleChange");
     const fileUploaded = event.target.files[0];
     console.log(fileUploaded);
     setVideoInfo(fileUploaded);
@@ -32,6 +30,7 @@ const BrowseVideo = ({ setVideoInfo }) => {
         ref={hiddenFileInput}
         onChange={handleChange}
         style={{ display: "none" }}
+        // TODO cancel browse
       />
     </div>
   );

@@ -11,15 +11,27 @@ import UserContext from "./userContext";
 const Home = () => {
   const context = React.useContext(UserContext);
   const { user } = context;
+
+  const [videoUrl, setVideoUrl] = React.useState(null);
   const [videoInfo, setVideoInfo] = React.useState(null);
+
+  const updateSelectedVideo = (newVideoInfo) => {
+    setVideoUrl(URL.createObjectURL(newVideoInfo) || null);
+    setVideoInfo(newVideoInfo);
+  };
 
   return (
     <div className="Home">
+      <h1>Upload a clip!</h1>
       {user?.username ? (
         videoInfo === null ? (
-          <BrowseVideo setVideoInfo={setVideoInfo} />
+          <BrowseVideo setVideoInfo={updateSelectedVideo} />
         ) : (
-          <UploadVideo videoInfo={videoInfo} setVideoInfo={setVideoInfo} />
+          <UploadVideo
+            videoUrl={videoUrl}
+            videoInfo={videoInfo}
+            setVideoInfo={setVideoInfo}
+          />
         )
       ) : (
         <GLoginBtn />
