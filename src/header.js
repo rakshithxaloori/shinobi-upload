@@ -8,18 +8,19 @@ const Header = () => {
   const { user } = context;
 
   return (
-    <div className="Header">
-      <a className="Header-link" href="/">
+    <nav class="navbar navbar-dark bg-dark position-absolute top-0 w-100">
+      <a className="Header-link navbar-brand" href="/">
         <img
-          className="Header-logo"
           src={process.env.PUBLIC_URL + "logo512.png"}
+          style={{ borderRadius: 20 }}
           height={40}
           alt="Shinobi"
         />
         <p className="Header-text">Shinobi</p>
       </a>
       {user?.username && (
-        <div className="Header-user">
+        <div className="Header-user ml-auto">
+          <p className="Header-user-username">{user.username}</p>
           <img
             className="Header-user-picture"
             src={user.picture}
@@ -27,10 +28,9 @@ const Header = () => {
             style={{ borderRadius: 20 }}
             alt={user.username}
           />
-          <p className="Header-user-username">{user.username}</p>
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 
