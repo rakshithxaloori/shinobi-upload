@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useAlert } from "react-alert";
 
 import Home from "./home";
 import Header from "./header";
@@ -9,11 +10,11 @@ import "./App.css";
 import { getUser, removeUser, setUser } from "./utils/token";
 import UserContext from "./userContext";
 import { createAPIKit } from "./utils/APIKit";
-import { showAlert } from "./utils/alert";
 import { handleAPIError } from "./utils/error";
 
 function App() {
   let cancelTokenSource = axios.CancelToken.source();
+  const showAlert = useAlert();
 
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {

@@ -1,9 +1,9 @@
 import React from "react";
 import ReactPlayer from "react-player/lazy";
+import { useAlert } from "react-alert";
 import axios from "axios";
 
 import "../../styles/upload_video.css";
-import { showAlert } from "../../utils/alert";
 import { createAPIKit } from "../../utils/APIKit";
 import { handleAPIError } from "../../utils/error";
 import ButtonsGroup from "./buttons";
@@ -38,7 +38,7 @@ class UploadVideo extends React.Component {
 
   handleUplaod = async () => {
     if (this.props.videoInfo.size > VIDEO_MAX_SIZE) {
-      showAlert("Select a file with size less than 500 MB");
+      this.props.showAlert("Select a file with size less than 500 MB");
       return;
     }
 
@@ -47,13 +47,13 @@ class UploadVideo extends React.Component {
       clipDuration < VIDEO_MIN_DURATION ||
       clipDuration >= VIDEO_MAX_DURATION + 1
     ) {
-      showAlert("Clip must be b/w 5 and 60 seconds long");
+      this.props.showAlert("Clip must be b/w 5 and 60 seconds long");
       return;
     }
 
     // Check title length
     if (this.state.title === "") {
-      showAlert("Title can't be empty");
+      this.props.showAlert("Title can't be empty");
       return;
     }
 
@@ -95,16 +95,16 @@ class UploadVideo extends React.Component {
               { cancelToken: this.cancelTokenSource.token }
             )
               .then(() => {
-                showAlert("Clip Uploaded!");
+                this.props.showAlert("Clip Uploaded!");
               })
               .catch((e) => {
-                showAlert(handleAPIError(e));
+                this.props.showAlert(handleAPIError(e));
               });
           };
 
           const uploadFailure = (error) => {
             this.setState({ disable: false, isUploading: false });
-            showAlert(handleAPIError(error));
+            this.props.showAlert(handleAPIError(error));
           };
 
           const formData = new FormData();
@@ -127,12 +127,12 @@ class UploadVideo extends React.Component {
             .catch(uploadFailure);
         } catch (e) {
           this.setState({ disable: false, isUploading: false });
-          showAlert("Something went wrong. Upload failed");
+          this.props.showAlert("Something went wrong. Upload failed");
         }
       }
     } catch (e) {
       this.setState({ disable: false, isUploading: false });
-      showAlert(handleAPIError(e));
+      this.props.showAlert(handleAPIError(e));
     }
   };
 
@@ -178,4 +178,11 @@ class UploadVideo extends React.Component {
   );
 }
 
-export default UploadVideo;
+const Wrapper = (props) => {
+  let alert = useAlert();
+  return (
+    <UploadVideo showAlert={(message) => alert.show(message)} {...props} />
+  );
+};
+
+export default Wrapper;
