@@ -3,10 +3,10 @@ import React from "react";
 import "./styles/footer.css";
 
 const Footer = () => (
-  <div className="Box">
-    <div className="Container">
-      <div className="Row">
-        <div className="Column">
+  <div className="Footer">
+    <div className="Footer-container">
+      <div className="Footer-row">
+        <div className="Footer-column">
           <a
             className="Footer-link"
             rel="noopener noreferrer"
@@ -32,13 +32,13 @@ const Footer = () => (
             Delete Account
           </a>
         </div>
-        <div className="Column">
+        <div className="Footer-column">
           <a className="Footer-link" href="#">
             <ion-icon name="logo-reddit" />
             <span style={{ marginLeft: "10px" }}>Reddit</span>
           </a>
         </div>
-        <div className="Column">
+        <div className="Footer-column">
           <a href="https://play.google.com/store/apps/details?id=cc.shinobi.android">
             <img
               src={process.env.PUBLIC_URL + "PlayStore.png"}

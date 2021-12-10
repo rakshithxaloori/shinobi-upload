@@ -8,7 +8,7 @@ const Header = () => {
   const { user } = context;
 
   return (
-    <nav className="navbar navbar-dark bg-dark position-absolute top-0 w-100">
+    <nav className="Header navbar navbar-dark bg-dark">
       <a className="Header-link navbar-brand" href="/">
         <img
           src={process.env.PUBLIC_URL + "logo512.png"}

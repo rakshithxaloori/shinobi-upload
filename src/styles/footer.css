@@ -1,45 +1,41 @@
 /* https://www.geeksforgeeks.org/how-to-create-a-simple-responsive-footer-in-react-js/ */
 
-.Box {
+.Footer {
   padding: 40px 0px 40px 0px;
   background: black;
+  width: 100%;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  flex-wrap: wrap;
 }
 
-.Container {
+.Footer-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 1000px;
   margin: 0 auto;
 }
 
-.Row {
+.Footer-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
 }
 
-.Column {
+.Footer-column {
   display: flex;
   flex-direction: column;
+  margin-left: 40px;
   text-align: left;
 }
-
-/* .Header {
-  font-size: 24px;
-  color: #fff;
-  margin-bottom: 40px;
-  font-weight: bold;
-} */
 
 .Footer-link {
   color: #fff;
   margin-left: 40px;
   margin-bottom: 20px;
   font-size: 16px;
+  display: flex;
+  flex-direction: row;
   text-decoration: none;
 }
 

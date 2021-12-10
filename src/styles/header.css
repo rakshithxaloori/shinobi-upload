@@ -1,3 +1,10 @@
+.Header {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  flex-wrap: wrap;
+}
+
 .Header-link {
   display: flex;
   flex-direction: row;

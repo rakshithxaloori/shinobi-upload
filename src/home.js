@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <h1>Upload a clip!</h1>
+      <h1 className="Title">Upload a clip!</h1>
       {user?.username ? (
         videoInfo === null ? (
           <BrowseVideo setVideoInfo={updateSelectedVideo} />

@@ -19,10 +19,10 @@ const BrowseVideo = ({ setVideoInfo }) => {
   };
 
   return (
-    <div className="Container">
-      <button className="Button" onClick={handleClick} disabled={disable}>
+    <div className="Browse">
+      <button className="Browse-btn" onClick={handleClick} disabled={disable}>
         <ion-icon name="albums-outline"></ion-icon>
-        <p className="Button-text">Select a clip</p>
+        <p className="Browse-btn-txt">Select a clip</p>
       </button>
       <input
         type="file"

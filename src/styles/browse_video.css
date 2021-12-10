@@ -1,9 +1,10 @@
-.Container {
+.Browse {
+  margin-top: 100px;
   justify-content: center;
   align-items: center;
 }
 
-.Button {
+.Browse-btn {
   display: flex;
   flex-direction: row;
   background-color: lightseagreen;
@@ -21,7 +22,7 @@ ion-icon {
   margin-right: 8px;
 }
 
-.Button-text {
+.Browse-btn-txt {
   font-size: 24px;
   font-weight: bold;
 }
