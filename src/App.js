@@ -14,7 +14,7 @@ import { handleAPIError } from "./utils/error";
 
 function App() {
   let cancelTokenSource = axios.CancelToken.source();
-  const showAlert = useAlert();
+  const alert = useAlert();
 
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
@@ -79,13 +79,13 @@ function App() {
             if (error.response) {
               const { status, data } = error.response;
               if (status < 500) {
-                showAlert(data.detail);
+                alert.show(data.detail);
                 dispatch({ type: "INVALID_TOKEN" });
               } else {
-                showAlert("Trouble connecting to the internet", 5000);
+                alert.show("Trouble connecting to the internet", 5000);
               }
             } else {
-              showAlert(handleAPIError(error));
+              alert.show(handleAPIError(error));
             }
           };
 
