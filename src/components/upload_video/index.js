@@ -8,6 +8,7 @@ import { createAPIKit } from "../../utils/APIKit";
 import { handleAPIError } from "../../utils/error";
 import ButtonsGroup from "./buttons";
 import ProgressBar from "./progress_bar";
+import Recaptcha from "./recaptcha";
 
 const VIDEO_HEIGHT = 360;
 const VIDEO_WIDTH = 640;
@@ -17,6 +18,7 @@ const VIDEO_MAX_DURATION = 60;
 
 class UploadVideo extends React.Component {
   videoRef = React.createRef();
+  recaptchaRef = React.createRef();
 
   cancelTokenSource = axios.CancelToken.source();
 
@@ -32,7 +34,8 @@ class UploadVideo extends React.Component {
     this.setState({ title: event.target.value });
   };
 
-  handleCancel = () => {
+  handleCancel = async () => {
+    await this.recaptchaRef.current.reset();
     this.props.setVideoInfo(null);
   };
 
@@ -57,6 +60,8 @@ class UploadVideo extends React.Component {
       return;
     }
 
+    const token = await this.recaptchaRef.current.executeAsync();
+
     // Get a presigned url
     this.setState({ disable: true, isUploading: true });
     const player = this.videoRef.current.getInternalPlayer();
@@ -67,6 +72,7 @@ class UploadVideo extends React.Component {
       const s3_presigned_response = await APIKit.post(
         "/clips/presigned/",
         {
+          recaptcha_token: token,
           clip_size: this.props.videoInfo.size,
           clip_type: splitList[splitList.length - 1],
           game_code: "30035",
@@ -165,6 +171,7 @@ class UploadVideo extends React.Component {
         controls
         url={this.props.videoUrl}
       />
+      <Recaptcha recaptchaRef={this.recaptchaRef} />
       {this.state.isUploading ? (
         <ProgressBar progress={this.state.progress} />
       ) : (
