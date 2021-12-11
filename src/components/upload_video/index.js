@@ -70,7 +70,7 @@ class UploadVideo extends React.Component {
     try {
       const APIKit = await createAPIKit();
       const s3_presigned_response = await APIKit.post(
-        "/clips/presigned/",
+        "/clips/presigned/web/",
         {
           recaptcha_token: token,
           clip_size: this.props.videoInfo.size,

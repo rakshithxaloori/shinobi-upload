@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const createErrorStr = (error) => {
-  console.log("NETWORK ERROR");
   if (error.response) {
     // Request made and server responded
     console.log("ERROR DATA", error.response.data);
@@ -23,5 +22,7 @@ export const handleAPIError = (error) => {
   if (!axios.isCancel(error)) {
     const errorStr = createErrorStr(error);
     console.log(errorStr);
+    return errorStr;
   }
+  return null;
 };
