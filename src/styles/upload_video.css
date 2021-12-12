@@ -4,6 +4,41 @@
   margin-bottom: 100px;
 }
 
+.Upload-games-list {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 3px 20px rgb(0 0 0 / 0.2);
+  position: absolute;
+  margin-left: 60px;
+  z-index: 2;
+  border-radius: 10px;
+  padding: 10px 20px 10px 20px;
+}
+
+.Upload-game {
+  background-color: white;
+  border-width: 0px;
+  border-color: white;
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+}
+
+.Upload-game:hover {
+  background-color: rgb(0 0 0 / 0.2);
+  border-radius: 10px;
+}
+
+.Upload-chosen-game {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  background-color: rgb(0 0 0 / 0.2);
+  border-radius: 10px;
+  padding: 5px 10px 5px 10px;
+}
+
 .Upload-title {
   margin-bottom: 20px;
 }

@@ -16,6 +16,25 @@ const VIDEO_MAX_SIZE = 500 * 1000 * 1000;
 const VIDEO_MIN_DURATION = 5;
 const VIDEO_MAX_DURATION = 60;
 
+const Game = ({ game, selectGame }) => {
+  return (
+    <span
+      className="Upload-game"
+      onClick={() => {
+        selectGame(game);
+      }}
+    >
+      <img
+        src={game.logo_url}
+        style={{ borderRadius: 20 }}
+        height={40}
+        alt="Shinobi"
+      />
+      <span style={{ marginLeft: 10 }}>{game.name}</span>
+    </span>
+  );
+};
+
 class UploadVideo extends React.Component {
   videoRef = React.createRef();
   recaptchaRef = React.createRef();
@@ -25,13 +44,56 @@ class UploadVideo extends React.Component {
   state = {
     fileKey: null,
     title: "",
+    searchText: "",
+    games: [],
+    chosenGame: null,
     progress: 0,
     disable: false,
     isUploading: false,
   };
 
+  selectGame = (game) => {
+    this.setState({ chosenGame: game, searchText: "", games: [] });
+  };
+
   handleTitleChange = (event) => {
     this.setState({ title: event.target.value });
+  };
+
+  handleGameChange = (event) => {
+    if (event.target.value === "") {
+      this.setState({ searchText: "", games: [] });
+      return;
+    }
+    const callback = async () => {
+      const onSuccess = (response) => {
+        const { games } = response.data?.payload;
+        console.log(games);
+        this.setState({ games });
+        if (games.length === 0) {
+          this.props.showAlert(
+            "Sorry, we don't have that game. Post on r/shinobi_app to let us know you want the game",
+            undefined,
+            5000
+          );
+        }
+      };
+
+      console.log(this.state.searchText);
+
+      const APIKit = await createAPIKit();
+      APIKit.post(
+        "/profile/games/search/",
+        { search: this.state.searchText },
+        { cancelToken: this.cancelTokenSource.token }
+      )
+        .then(onSuccess)
+        .catch((e) => {
+          this.props.showAlert(handleAPIError(e));
+        });
+    };
+
+    this.setState({ searchText: event.target.value }, callback);
   };
 
   handleCancel = async () => {
@@ -51,6 +113,11 @@ class UploadVideo extends React.Component {
       clipDuration >= VIDEO_MAX_DURATION + 1
     ) {
       this.props.showAlert("Clip must be b/w 5 and 60 seconds long");
+      return;
+    }
+
+    if (this.state.chosenGame === null) {
+      this.props.showAlert("Choose a game");
       return;
     }
 
@@ -75,7 +142,7 @@ class UploadVideo extends React.Component {
           recaptcha_token: token,
           clip_size: this.props.videoInfo.size,
           clip_type: splitList[splitList.length - 1],
-          game_code: "30035",
+          game_code: this.state.chosenGame.id,
           title: this.state.title,
           clip_height: player.videoHeight,
           clip_width: player.videoWidth,
@@ -144,14 +211,56 @@ class UploadVideo extends React.Component {
 
   render = () => (
     <div className="Upload">
-      <div className="input-group mb-3">
-        <span
-          className="input-group-text"
-          id="basic-addon1"
-          style={{ fontWeight: "bold" }}
-        >
-          Clip Title
-        </span>
+      {this.state.chosenGame ? (
+        <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
+          <img
+            src={this.state.chosenGame.logo_url}
+            style={{ borderRadius: 20 }}
+            height={40}
+            alt="Shinobi"
+          />
+          <span style={{ marginLeft: 10 }}>{this.state.chosenGame.name}</span>
+          <span
+            style={{ position: "absolute", right: 10 }}
+            onClick={() => {
+              if (!this.state.disable) {
+                this.setState({ chosenGame: null });
+              }
+            }}
+          >
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </span>
+        </div>
+      ) : (
+        <div className="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <ion-icon name="game-controller-outline"></ion-icon>
+            </span>
+          </div>
+          <input
+            className="form-control"
+            style={{ width: VIDEO_WIDTH - 100 }}
+            value={this.state.searchText}
+            onChange={this.handleGameChange}
+            type="search"
+            placeholder="Choose Game"
+            required
+            disabled={this.state.disable}
+          />
+        </div>
+      )}
+
+      {this.state.games.length > 0 && (
+        <div className="Upload-games-list" style={{ width: VIDEO_WIDTH - 100 }}>
+          {this.state.games.map((game) => (
+            <Game game={game} selectGame={this.selectGame} />
+          ))}
+        </div>
+      )}
+
+      <div className="input-group mb-3" style={{ marginTop: 40 }}>
+        <span class="input-group-text">Clip Title</span>
         <input
           className="form-control"
           style={{ width: VIDEO_WIDTH - 100 }}
