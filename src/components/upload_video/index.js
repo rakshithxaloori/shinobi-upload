@@ -254,7 +254,7 @@ class UploadVideo extends React.Component {
       {this.state.games.length > 0 && (
         <div className="Upload-games-list" style={{ width: VIDEO_WIDTH - 100 }}>
           {this.state.games.map((game) => (
-            <Game game={game} selectGame={this.selectGame} />
+            <Game key={game.id} game={game} selectGame={this.selectGame} />
           ))}
         </div>
       )}
