@@ -33,7 +33,12 @@ const Footer = () => (
           </a>
         </div>
         <div className="Footer-column">
-          <a className="Footer-link" href="#">
+          <a
+            className="Footer-link"
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://www.reddit.com/r/shinobi_app/"
+          >
             <ion-icon name="logo-reddit" />
             <span style={{ marginLeft: "10px" }}>Reddit</span>
           </a>
