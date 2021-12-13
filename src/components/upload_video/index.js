@@ -267,7 +267,7 @@ class UploadVideo extends React.Component {
           value={this.state.title}
           onChange={this.handleTitleChange}
           type="text"
-          maxLength={40}
+          maxLength={80}
           placeholder="One tap headshots yall!"
           required
           disabled={this.state.disable}
