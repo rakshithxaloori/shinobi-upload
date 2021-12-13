@@ -4,6 +4,12 @@
   align-items: center;
 }
 
+.Browse-count {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
 .Browse-btn {
   display: flex;
   flex-direction: row;
@@ -13,6 +19,7 @@
   width: 240px;
   border-radius: 32px;
   cursor: pointer;
+  align-self: center;
   justify-content: center;
   align-items: center;
 }
