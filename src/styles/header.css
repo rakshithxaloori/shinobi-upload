@@ -27,6 +27,7 @@
   margin-right: 40px;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 .Header-user-username {
@@ -34,4 +35,13 @@
   padding-top: 0px;
   font-size: 18px;
   margin-right: 8px;
+}
+
+.Header-user-picture {
+  margin-right: 8px;
+}
+
+.Header-Dropdown-Item {
+  display: flex;
+  flex-direction: row;
 }
