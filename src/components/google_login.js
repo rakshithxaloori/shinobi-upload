@@ -2,8 +2,6 @@ import React from "react";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 
-import "../styles/google_login.css";
-
 import { createAPIKit } from "../utils/APIKit";
 import { handleAPIError } from "../utils/error";
 import UserContext from "../userContext";
