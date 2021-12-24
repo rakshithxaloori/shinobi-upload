@@ -12,14 +12,16 @@ const BrowseVideo = ({ setVideoInfo }) => {
   const cancelTokenSource = axios.CancelToken.source();
 
   const [clipCount, setClipCount] = React.useState(null);
+  const [timeLeft, setTimeLeft] = React.useState(null);
   const [disable, setDisable] = React.useState(false);
   const hiddenFileInput = React.useRef(null);
 
   React.useEffect(() => {
     const fetchClipCount = async () => {
       const onSuccess = (response) => {
-        const { quota } = response.data?.payload;
+        const { quota, time_left } = response.data?.payload;
         setClipCount(quota);
+        setTimeLeft(time_left);
       };
 
       const APIKit = await createAPIKit();
@@ -52,21 +54,29 @@ const BrowseVideo = ({ setVideoInfo }) => {
 
   return clipCount !== null ? (
     <div className="Browse">
-      <p className="Browse-count">
-        You can upload {clipCount} more {clipCount === 1 ? "clip" : "clips"}{" "}
-        today
-      </p>
-      <button className="Browse-btn" onClick={handleClick} disabled={disable}>
-        <ion-icon name="albums-outline"></ion-icon>
-        <p className="Browse-btn-txt">Select a clip</p>
-      </button>
-      <input
-        type="file"
-        accept="video/mp4,video/quicktime,video/wmv,video/avi"
-        ref={hiddenFileInput}
-        onChange={handleChange}
-        style={{ display: "none" }}
-      />
+      {clipCount <= 0 ? (
+        <p className="Browse-count">
+          {timeLeft} until you can upload more clips!
+        </p>
+      ) : (
+        <>
+          <button
+            className="Browse-btn"
+            onClick={handleClick}
+            disabled={disable}
+          >
+            <ion-icon name="albums-outline"></ion-icon>
+            <p className="Browse-btn-txt">Select a clip</p>
+          </button>
+          <input
+            type="file"
+            accept="video/mp4,video/quicktime,video/wmv,video/avi"
+            ref={hiddenFileInput}
+            onChange={handleChange}
+            style={{ display: "none" }}
+          />
+        </>
+      )}
     </div>
   ) : null;
 };
