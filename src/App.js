@@ -118,10 +118,19 @@ function App() {
           token: newUserObj.token_key,
         });
       },
-      logoutUser: () => {
-        dispatch({
-          type: "SIGN_OUT",
-        });
+      logoutUser: async () => {
+        const APIKit = await createAPIKit();
+        APIKit.get("/auth/logout/", {
+          cancelToken: cancelTokenSource.token,
+        })
+          .then(() => {
+            dispatch({
+              type: "SIGN_OUT",
+            });
+          })
+          .catch((e) => {
+            alert.show(handleAPIError(e));
+          });
       },
     }),
     []
