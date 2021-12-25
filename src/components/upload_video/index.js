@@ -52,6 +52,21 @@ class UploadVideo extends React.Component {
     isUploading: false,
   };
 
+  unloadListener = (ev) => {
+    if (this.state.isUploading) {
+      ev.preventDefault();
+      ev.returnValue = "Uploading a clip. Are you sure you want to close?";
+    }
+  };
+
+  componentDidMount = () => {
+    window.addEventListener("beforeunload", this.unloadListener);
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener("beforeunload", this.unloadListener);
+  };
+
   selectGame = (game) => {
     this.setState({ chosenGame: game, searchText: "", games: [] });
   };
