@@ -42,6 +42,15 @@ const Footer = () => (
             <ion-icon name="logo-reddit" />
             <span style={{ marginLeft: "10px" }}>Reddit</span>
           </a>
+          <a
+            className="Footer-link"
+            rel="noopener noreferrer"
+            target="_blank"
+            href={process.env.REACT_APP_DISCORD_INVITE_LINK}
+          >
+            <ion-icon name="logo-discord" />
+            <span style={{ marginLeft: "10px" }}>Discord</span>
+          </a>
         </div>
         <div className="Footer-column">
           <a href="https://play.google.com/store/apps/details?id=cc.shinobi.android">
