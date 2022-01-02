@@ -38,6 +38,7 @@ const Game = ({ game, selectGame }) => {
 class UploadVideo extends React.Component {
   videoRef = React.createRef();
   recaptchaRef = React.createRef();
+  animationRef = React.createRef();
 
   cancelTokenSource = axios.CancelToken.source();
 
@@ -50,6 +51,7 @@ class UploadVideo extends React.Component {
     progress: 0,
     disable: false,
     isUploading: false,
+    error: "",
   };
 
   unloadListener = (ev) => {
@@ -83,18 +85,22 @@ class UploadVideo extends React.Component {
     const callback = async () => {
       const onSuccess = (response) => {
         const { games } = response.data?.payload;
-        console.log(games);
         this.setState({ games });
         if (games.length === 0) {
-          this.props.showAlert(
-            "Sorry, we don't have that game. Post on r/shinobi_app to let us know you want the game",
-            undefined,
-            5000
-          );
+          // this.props.showAlert(
+          //   "Sorry, we don't have that game. Post on r/shinobi_app to let us know you want the game",
+          //   undefined,
+          //   5000
+          // );
+          if (this.state.searchText === "") {
+            this.setState({ error: "" });
+          } else {
+            this.setState({
+              error: `Sorry, we don't have "${this.state.searchText}" game. Let us know on Discord or Reddit`,
+            });
+          }
         }
       };
-
-      console.log(this.state.searchText);
 
       const APIKit = await createAPIKit();
       APIKit.post(
@@ -108,7 +114,7 @@ class UploadVideo extends React.Component {
         });
     };
 
-    this.setState({ searchText: event.target.value }, callback);
+    this.setState({ searchText: event.target.value, error: "" }, callback);
   };
 
   handleCancel = async () => {
@@ -226,6 +232,7 @@ class UploadVideo extends React.Component {
 
   render = () => (
     <div className="Upload">
+      <div className="Upload-animation" ref={this.animationRef} />
       {this.state.chosenGame ? (
         <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
           <img
@@ -247,23 +254,28 @@ class UploadVideo extends React.Component {
           </span>
         </div>
       ) : (
-        <div className="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <ion-icon name="game-controller-outline"></ion-icon>
-            </span>
+        <>
+          <div style={{ height: 30, color: "red", marginBottom: 10 }}>
+            {this.state.error && <span className="">{this.state.error}</span>}
           </div>
-          <input
-            className="form-control"
-            style={{ width: VIDEO_WIDTH - 100 }}
-            value={this.state.searchText}
-            onChange={this.handleGameChange}
-            type="search"
-            placeholder="Choose Game"
-            required
-            disabled={this.state.disable}
-          />
-        </div>
+          <div className="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <ion-icon name="game-controller-outline"></ion-icon>
+              </span>
+            </div>
+            <input
+              className="form-control"
+              style={{ width: VIDEO_WIDTH - 100 }}
+              value={this.state.searchText}
+              onChange={this.handleGameChange}
+              type="search"
+              placeholder="Choose Game"
+              required
+              disabled={this.state.disable}
+            />
+          </div>
+        </>
       )}
 
       {this.state.games.length > 0 && (
