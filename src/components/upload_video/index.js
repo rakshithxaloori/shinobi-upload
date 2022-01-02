@@ -2,6 +2,7 @@ import React from "react";
 import ReactPlayer from "react-player/lazy";
 import { useAlert } from "react-alert";
 import axios from "axios";
+import lottie from "lottie-web";
 
 import "../../styles/upload_video.css";
 import { createAPIKit } from "../../utils/APIKit";
@@ -52,6 +53,24 @@ class UploadVideo extends React.Component {
     disable: false,
     isUploading: false,
     error: "",
+    showingAnimation: false,
+  };
+
+  loadAnimation = () => {
+    const callback = () => {
+      const anim = lottie.loadAnimation({
+        container: this.animationRef.current,
+        path: "/animations/81296-success.json",
+      });
+      anim.setSpeed(0.5);
+      setTimeout(() => {
+        this.setState({ showingAnimation: false }, () => {
+          anim.destroy();
+        });
+      }, 6000);
+    };
+
+    this.setState({ showingAnimation: true }, callback);
   };
 
   unloadListener = (ev) => {
@@ -87,11 +106,6 @@ class UploadVideo extends React.Component {
         const { games } = response.data?.payload;
         this.setState({ games });
         if (games.length === 0) {
-          // this.props.showAlert(
-          //   "Sorry, we don't have that game. Post on r/shinobi_app to let us know you want the game",
-          //   undefined,
-          //   5000
-          // );
           if (this.state.searchText === "") {
             this.setState({ error: "" });
           } else {
@@ -182,7 +196,9 @@ class UploadVideo extends React.Component {
           };
 
           const uploadSuccess = async () => {
-            console.log(this.state.fileKey);
+            // Show success animation
+            this.loadAnimation();
+
             APIKit.post(
               "/clips/success/",
               { file_key: this.state.fileKey },
@@ -232,7 +248,11 @@ class UploadVideo extends React.Component {
 
   render = () => (
     <div className="Upload">
-      <div className="Upload-animation" ref={this.animationRef} />
+      {this.state.showingAnimation && (
+        <div className="Upload-animation-parent">
+          <div className="Upload-animation" ref={this.animationRef} />
+        </div>
+      )}
       {this.state.chosenGame ? (
         <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
           <img
