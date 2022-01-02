@@ -4,6 +4,29 @@
   margin-bottom: 100px;
 }
 
+.Upload-animation-parent {
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(5px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.Upload-animation {
+  height: 500px;
+  width: 500px;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .Upload-games-list {
   display: flex;
   flex-direction: column;

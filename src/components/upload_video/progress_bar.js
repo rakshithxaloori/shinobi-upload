@@ -12,7 +12,7 @@ const ProgressBar = ({ progress }) => {
       <div
         className={dynClassName}
         role="progressbar"
-        style={{ width: `${progress}%` }}
+        style={{ width: `${progress}%`, fontWeight: "bold" }}
         aria-valuenow={progress}
         aria-valuemin="0"
         aria-valuemax="100"
