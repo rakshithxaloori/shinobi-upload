@@ -51,7 +51,7 @@ const Header = () => {
             aria-labelledby="navbarDropdown"
           >
             <span
-              class="dropdown-item Header-Dropdown-Item"
+              className="dropdown-item Header-Dropdown-Item"
               onClick={logoutUser}
             >
               <ion-icon name="exit-outline"></ion-icon>
