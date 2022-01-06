@@ -179,8 +179,8 @@ class UploadVideo extends React.Component {
           clip_type: splitList[splitList.length - 1],
           game_code: this.state.chosenGame.id,
           title: this.state.title,
-          clip_height: player.videoHeight,
-          clip_width: player.videoWidth,
+          clip_height: player.videoHeight || 720,
+          clip_width: player.videoWidth || 720,
         },
         { cancelToken: this.cancelTokenSource.token }
       );
@@ -279,8 +279,8 @@ class UploadVideo extends React.Component {
             {this.state.error && <span className="">{this.state.error}</span>}
           </div>
           <div className="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
+            <div className="input-group-prepend">
+              <span className="input-group-text">
                 <ion-icon name="game-controller-outline"></ion-icon>
               </span>
             </div>
@@ -307,7 +307,7 @@ class UploadVideo extends React.Component {
       )}
 
       <div className="input-group mb-3" style={{ marginTop: 40 }}>
-        <span class="input-group-text">Clip Title</span>
+        <span className="input-group-text">Clip Title</span>
         <input
           className="form-control"
           style={{ width: VIDEO_WIDTH - 100 }}
