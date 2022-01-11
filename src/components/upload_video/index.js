@@ -16,6 +16,7 @@ const VIDEO_WIDTH = 640;
 const VIDEO_MAX_SIZE = 500 * 1000 * 1000;
 const VIDEO_MIN_DURATION = 5;
 const VIDEO_MAX_DURATION = 60;
+const POST_TITLE_LENGTH = 80;
 
 const Game = ({ game, selectGame }) => {
   return (
@@ -162,6 +163,10 @@ class UploadVideo extends React.Component {
       return;
     }
 
+    if (this.state.title.length > POST_TITLE_LENGTH) {
+      this.props.showAlert("Title has to be less than 80 characters");
+    }
+
     const token = await this.recaptchaRef.current.executeAsync();
 
     // Get a presigned url
@@ -246,99 +251,122 @@ class UploadVideo extends React.Component {
     }
   };
 
-  render = () => (
-    <div className="Upload">
-      {this.state.showingAnimation && (
-        <div className="Upload-animation-parent">
-          <div className="Upload-animation" ref={this.animationRef} />
-        </div>
-      )}
-      {this.state.chosenGame ? (
-        <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
-          <img
-            src={this.state.chosenGame.logo_url}
-            style={{ borderRadius: 20 }}
-            height={40}
-            alt="Shinobi"
-          />
-          <span style={{ marginLeft: 10 }}>{this.state.chosenGame.name}</span>
-          <span
-            style={{ position: "absolute", right: 10 }}
-            onClick={() => {
-              if (!this.state.disable) {
-                this.setState({ chosenGame: null });
-              }
-            }}
-          >
-            <ion-icon name="close-circle-outline"></ion-icon>
-          </span>
-        </div>
-      ) : (
-        <>
-          <div style={{ height: 30, color: "red", marginBottom: 10 }}>
-            {this.state.error && <span className="">{this.state.error}</span>}
+  render = () => {
+    const defInputStyle = { width: VIDEO_WIDTH - 100 };
+    const defCountStyle = {
+      fontSize: 12,
+      position: "relative",
+      bottom: 20,
+      left: VIDEO_WIDTH - 30,
+    };
+
+    let inputStyle =
+      this.state.title.length > POST_TITLE_LENGTH
+        ? { color: "red", ...defInputStyle }
+        : { ...defInputStyle };
+    let countStyle =
+      this.state.title.length > POST_TITLE_LENGTH
+        ? { color: "red", ...defCountStyle }
+        : { ...defCountStyle };
+
+    return (
+      <div className="Upload">
+        {this.state.showingAnimation && (
+          <div className="Upload-animation-parent">
+            <div className="Upload-animation" ref={this.animationRef} />
           </div>
-          <div className="input-group mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text">
-                <ion-icon name="game-controller-outline"></ion-icon>
-              </span>
-            </div>
-            <input
-              className="form-control"
-              style={{ width: VIDEO_WIDTH - 100 }}
-              value={this.state.searchText}
-              onChange={this.handleGameChange}
-              type="search"
-              placeholder="Choose Game"
-              required
-              disabled={this.state.disable}
+        )}
+        {this.state.chosenGame ? (
+          <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
+            <img
+              src={this.state.chosenGame.logo_url}
+              style={{ borderRadius: 20 }}
+              height={40}
+              alt="Shinobi"
             />
+            <span style={{ marginLeft: 10 }}>{this.state.chosenGame.name}</span>
+            <span
+              style={{ position: "absolute", right: 10 }}
+              onClick={() => {
+                if (!this.state.disable) {
+                  this.setState({ chosenGame: null });
+                }
+              }}
+            >
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </span>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <div style={{ height: 30, color: "red", marginBottom: 10 }}>
+              {this.state.error && <span className="">{this.state.error}</span>}
+            </div>
+            <div className="input-group mb-3">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <ion-icon name="game-controller-outline"></ion-icon>
+                </span>
+              </div>
+              <input
+                className="form-control"
+                style={{ width: VIDEO_WIDTH - 100 }}
+                value={this.state.searchText}
+                onChange={this.handleGameChange}
+                type="search"
+                placeholder="Choose Game"
+                required
+                disabled={this.state.disable}
+              />
+            </div>
+          </>
+        )}
 
-      {this.state.games.length > 0 && (
-        <div className="Upload-games-list" style={{ width: VIDEO_WIDTH - 100 }}>
-          {this.state.games.map((game) => (
-            <Game key={game.id} game={game} selectGame={this.selectGame} />
-          ))}
+        {this.state.games.length > 0 && (
+          <div
+            className="Upload-games-list"
+            style={{ width: VIDEO_WIDTH - 100 }}
+          >
+            {this.state.games.map((game) => (
+              <Game key={game.id} game={game} selectGame={this.selectGame} />
+            ))}
+          </div>
+        )}
+
+        <div className="input-group mb-3" style={{ marginTop: 40 }}>
+          <span className="input-group-text">Clip Title</span>
+          <input
+            className="form-control"
+            style={inputStyle}
+            value={this.state.title}
+            onChange={this.handleTitleChange}
+            type="text"
+            placeholder="One tap headshots yall!"
+            required
+            disabled={this.state.disable}
+          />
         </div>
-      )}
+        <span style={countStyle}>{this.state.title.length}/80</span>
 
-      <div className="input-group mb-3" style={{ marginTop: 40 }}>
-        <span className="input-group-text">Clip Title</span>
-        <input
-          className="form-control"
-          style={{ width: VIDEO_WIDTH - 100 }}
-          value={this.state.title}
-          onChange={this.handleTitleChange}
-          type="text"
-          maxLength={80}
-          placeholder="One tap headshots yall!"
-          required
-          disabled={this.state.disable}
+        <ReactPlayer
+          ref={this.videoRef}
+          height={VIDEO_HEIGHT}
+          width={VIDEO_WIDTH}
+          controls
+          url={this.props.videoUrl}
         />
+        <Recaptcha recaptchaRef={this.recaptchaRef} />
+        {this.state.isUploading ? (
+          <ProgressBar progress={this.state.progress} />
+        ) : (
+          <ButtonsGroup
+            disable={this.state.disable}
+            handleCancel={this.handleCancel}
+            handleUpload={this.handleUplaod}
+          />
+        )}
       </div>
-      <ReactPlayer
-        ref={this.videoRef}
-        height={VIDEO_HEIGHT}
-        width={VIDEO_WIDTH}
-        controls
-        url={this.props.videoUrl}
-      />
-      <Recaptcha recaptchaRef={this.recaptchaRef} />
-      {this.state.isUploading ? (
-        <ProgressBar progress={this.state.progress} />
-      ) : (
-        <ButtonsGroup
-          disable={this.state.disable}
-          handleCancel={this.handleCancel}
-          handleUpload={this.handleUplaod}
-        />
-      )}
-    </div>
-  );
+    );
+  };
 }
 
 const Wrapper = (props) => {
