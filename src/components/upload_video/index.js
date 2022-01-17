@@ -186,6 +186,7 @@ class UploadVideo extends React.Component {
           title: this.state.title,
           clip_height: player.videoHeight || 720,
           clip_width: player.videoWidth || 720,
+          duration: clipDuration,
         },
         { cancelToken: this.cancelTokenSource.token }
       );
