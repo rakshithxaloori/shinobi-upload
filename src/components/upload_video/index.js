@@ -1,5 +1,4 @@
 import React from "react";
-import ReactPlayer from "react-player/lazy";
 import { useAlert } from "react-alert";
 import axios from "axios";
 import lottie from "lottie-web";
@@ -10,10 +9,10 @@ import { handleAPIError } from "../../utils/error";
 import ButtonsGroup from "./buttons";
 import ProgressBar from "./progress_bar";
 import Recaptcha from "./recaptcha";
+import { VIDEO_MAX_SIZE, VIDEO_MIME_TYPES } from "../../utils";
 
 const VIDEO_HEIGHT = 360;
 const VIDEO_WIDTH = 640;
-const VIDEO_MAX_SIZE = 500 * 1000 * 1000;
 const VIDEO_MIN_DURATION = 5;
 const VIDEO_MAX_DURATION = 60;
 const POST_TITLE_LENGTH = 80;
@@ -137,13 +136,18 @@ class UploadVideo extends React.Component {
     this.props.setVideoInfo(null);
   };
 
-  handleUplaod = async () => {
+  handleUpload = async () => {
+    if (VIDEO_MIME_TYPES.includes(this.props.videoInfo.type) === false) {
+      this.props.showAlert("Select an ogg, mp4, mov or webm video");
+      return;
+    }
+
     if (this.props.videoInfo.size > VIDEO_MAX_SIZE) {
       this.props.showAlert("Select a file with size less than 500 MB");
       return;
     }
 
-    const clipDuration = this.videoRef.current.getDuration();
+    const clipDuration = this.videoRef.current.duration;
     if (
       clipDuration < VIDEO_MIN_DURATION ||
       clipDuration >= VIDEO_MAX_DURATION + 1
@@ -171,7 +175,6 @@ class UploadVideo extends React.Component {
 
     // Get a presigned url
     this.setState({ disable: true, isUploading: true });
-    const player = this.videoRef.current.getInternalPlayer();
     const splitList = this.props.videoInfo.name.split(".");
 
     try {
@@ -184,8 +187,8 @@ class UploadVideo extends React.Component {
           clip_type: splitList[splitList.length - 1],
           game_code: this.state.chosenGame.id,
           title: this.state.title,
-          clip_height: player.videoHeight || 720,
-          clip_width: player.videoWidth || 720,
+          clip_height: this.videoRef.current.videoHeight || 720,
+          clip_width: this.videoRef.current.videoWidth || 720,
           duration: clipDuration,
         },
         { cancelToken: this.cancelTokenSource.token }
@@ -258,7 +261,7 @@ class UploadVideo extends React.Component {
       fontSize: 12,
       position: "relative",
       bottom: 20,
-      left: VIDEO_WIDTH - 30,
+      left: VIDEO_WIDTH - 70,
     };
 
     let inputStyle =
@@ -299,6 +302,7 @@ class UploadVideo extends React.Component {
           </div>
         ) : (
           <>
+            <span>{this.props.videoInfo.name}</span>
             <div style={{ height: 30, color: "red", marginBottom: 10 }}>
               {this.state.error && <span className="">{this.state.error}</span>}
             </div>
@@ -321,7 +325,6 @@ class UploadVideo extends React.Component {
             </div>
           </>
         )}
-
         {this.state.games.length > 0 && (
           <div
             className="Upload-games-list"
@@ -332,29 +335,27 @@ class UploadVideo extends React.Component {
             ))}
           </div>
         )}
-
         <div className="input-group mb-3" style={{ marginTop: 40 }}>
-          <span className="input-group-text">Clip Title</span>
+          <div className="input-group-prepend">
+            <span className="input-group-text">
+              <ion-icon name="document-text-outline"></ion-icon>
+            </span>
+          </div>
           <input
             className="form-control"
             style={inputStyle}
             value={this.state.title}
             onChange={this.handleTitleChange}
             type="text"
-            placeholder="One tap headshots y'all!"
+            placeholder="Clip Title"
             required
             disabled={this.state.disable}
           />
         </div>
         <span style={countStyle}>{this.state.title.length}/80</span>
-
-        <ReactPlayer
-          ref={this.videoRef}
-          height={VIDEO_HEIGHT}
-          width={VIDEO_WIDTH}
-          controls
-          url={this.props.videoUrl}
-        />
+        <video ref={this.videoRef} hidden>
+          <source src={this.props.videoUrl} />
+        </video>
         <Recaptcha recaptchaRef={this.recaptchaRef} />
         {this.state.isUploading ? (
           <ProgressBar progress={this.state.progress} />
@@ -362,7 +363,7 @@ class UploadVideo extends React.Component {
           <ButtonsGroup
             disable={this.state.disable}
             handleCancel={this.handleCancel}
-            handleUpload={this.handleUplaod}
+            handleUpload={this.handleUpload}
           />
         )}
       </div>
