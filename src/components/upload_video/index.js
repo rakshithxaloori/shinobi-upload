@@ -187,8 +187,8 @@ class UploadVideo extends React.Component {
           clip_type: splitList[splitList.length - 1],
           game_code: this.state.chosenGame.id,
           title: this.state.title,
-          clip_height: this.videoRef.current.videoHeight || 720,
-          clip_width: this.videoRef.current.videoWidth || 720,
+          clip_height: this.videoRef.current.videoHeight || 0,
+          clip_width: this.videoRef.current.videoWidth || 0,
           duration: clipDuration,
         },
         { cancelToken: this.cancelTokenSource.token }
