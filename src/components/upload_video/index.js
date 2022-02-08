@@ -187,8 +187,8 @@ class UploadVideo extends React.Component {
           clip_type: splitList[splitList.length - 1],
           game_code: this.state.chosenGame.id,
           title: this.state.title,
-          clip_height: this.videoRef.current.videoHeight || 720,
-          clip_width: this.videoRef.current.videoWidth || 720,
+          clip_height: this.videoRef.current.videoHeight || 0,
+          clip_width: this.videoRef.current.videoWidth || 0,
           duration: clipDuration,
         },
         { cancelToken: this.cancelTokenSource.token }
@@ -280,6 +280,7 @@ class UploadVideo extends React.Component {
             <div className="Upload-animation" ref={this.animationRef} />
           </div>
         )}
+        <span>{this.props.videoInfo.name}</span>
         {this.state.chosenGame ? (
           <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
             <img
@@ -302,7 +303,6 @@ class UploadVideo extends React.Component {
           </div>
         ) : (
           <>
-            <span>{this.props.videoInfo.name}</span>
             <div style={{ height: 30, color: "red", marginBottom: 10 }}>
               {this.state.error && <span className="">{this.state.error}</span>}
             </div>
