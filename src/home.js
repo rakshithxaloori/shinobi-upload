@@ -22,7 +22,7 @@ const Home = () => {
     // TODO if videoFile.type not VIDEO_MIME_TYPES, convert
     // Else upload directly
     if (VIDEO_MIME_TYPES.includes(videoFile.type) === false) {
-      alert.show("Select an ogg, mp4, mov or webm video");
+      alert.show("Select an avi, ogg, mp4, mov or webm video");
       return;
     }
     if (videoFile.size > VIDEO_MAX_SIZE) {

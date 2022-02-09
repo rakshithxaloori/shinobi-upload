@@ -53,6 +53,7 @@ class UploadVideo extends React.Component {
     disable: false,
     isUploading: false,
     error: "",
+    warning: "",
     showingAnimation: false,
   };
 
@@ -148,7 +149,11 @@ class UploadVideo extends React.Component {
     }
 
     const clipDuration = this.videoRef.current.duration;
-    if (
+    if (isNaN(clipDuration)) {
+      this.setState({
+        warning: `The clip won't appear in feed, if it's is less than ${VIDEO_MIN_DURATION} or more than ${VIDEO_MAX_DURATION} seconds`,
+      });
+    } else if (
       clipDuration < VIDEO_MIN_DURATION ||
       clipDuration >= VIDEO_MAX_DURATION + 1
     ) {
@@ -189,7 +194,7 @@ class UploadVideo extends React.Component {
           title: this.state.title,
           clip_height: this.videoRef.current.videoHeight || 0,
           clip_width: this.videoRef.current.videoWidth || 0,
-          duration: clipDuration,
+          duration: clipDuration || 0,
         },
         { cancelToken: this.cancelTokenSource.token }
       );
@@ -281,6 +286,13 @@ class UploadVideo extends React.Component {
           </div>
         )}
         <span>{this.props.videoInfo.name}</span>
+        <div style={{ height: 30, marginBottom: 10 }}>
+          {this.state.error ? (
+            <span style={{ color: "red" }}>{this.state.error}</span>
+          ) : this.state.warning ? (
+            <span style={{ color: "#ffc107" }}>{this.state.warning}</span>
+          ) : null}
+        </div>
         {this.state.chosenGame ? (
           <div className="Upload-chosen-game" style={{ width: VIDEO_WIDTH }}>
             <img
@@ -303,9 +315,6 @@ class UploadVideo extends React.Component {
           </div>
         ) : (
           <>
-            <div style={{ height: 30, color: "red", marginBottom: 10 }}>
-              {this.state.error && <span className="">{this.state.error}</span>}
-            </div>
             <div className="input-group mb-3">
               <div className="input-group-prepend">
                 <span className="input-group-text">
