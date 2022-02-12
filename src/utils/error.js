@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const createErrorStr = (error) => {
+  console.log(error);
   if (error.response) {
     // Request made and server responded
     console.log("ERROR DATA", error.response.data);

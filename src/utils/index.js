@@ -1,3 +1,5 @@
+export const POST_TITLE_LENGTH = 80;
+
 export const VIDEO_MIME_TYPES = [
   "video/mp4",
   "video/ogg",
@@ -7,3 +9,5 @@ export const VIDEO_MIME_TYPES = [
 ];
 
 export const VIDEO_MAX_SIZE = 500 * 1000 * 1000;
+
+export const VIDEO_WIDTH = 640;
