@@ -13,10 +13,6 @@ const Share = ({ title, game_name, post_id }) => {
   const alert = useAlert();
   const [copied, setCopied] = React.useState(false);
 
-  post_id = "SHgoDBdaE5L0";
-  title = "test share";
-  game_name = "Test Game";
-
   const shinobi_url = `https://shinobi.cc/clip/${post_id}`;
 
   // REFERENCE https://developers.facebook.com/docs/sharing/reference/share-dialog
