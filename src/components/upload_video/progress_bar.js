@@ -8,7 +8,10 @@ const ProgressBar = ({ progress }) => {
       ? "progress-bar progress-bar-striped progress-bar-animated bg-success"
       : "progress-bar progress-bar-striped bg-success";
   return (
-    <div className="Upload-progress progress" style={{ height: 20 }}>
+    <div
+      className="Upload-progress progress"
+      style={{ height: 20, width: "100%" }}
+    >
       <div
         className={dynClassName}
         role="progressbar"

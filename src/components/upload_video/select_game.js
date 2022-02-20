@@ -1,10 +1,12 @@
 import React from "react";
 import { useAlert } from "react-alert";
+import { IoCloseCircle, IoGameControllerOutline } from "react-icons/io5";
 import axios from "axios";
 
 import { createAPIKit } from "../../utils/APIKit";
 import { handleAPIError } from "../../utils/error";
 import { VIDEO_WIDTH } from "../../utils";
+import { defaultIconStyle } from "../../utils/styles";
 
 const GAME_ICON_SIZE = 30;
 
@@ -63,12 +65,13 @@ const SelectGame = ({ game, setGame, disable, setError }) => {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       {game ? (
         <div
           style={{
             display: "flex",
             flexDirection: "row",
+            width: "100%",
             alignItems: "center",
             position: "relative",
             borderRadius: 10,
@@ -96,7 +99,7 @@ const SelectGame = ({ game, setGame, disable, setError }) => {
               }
             }}
           >
-            <ion-icon name="close-circle"></ion-icon>
+            <IoCloseCircle style={defaultIconStyle} />
           </span>
         </div>
       ) : (
@@ -107,7 +110,7 @@ const SelectGame = ({ game, setGame, disable, setError }) => {
           <div className="input-group mb-3">
             <div className="input-group-prepend">
               <span className="input-group-text">
-                <ion-icon name="game-controller-outline"></ion-icon>
+                <IoGameControllerOutline style={defaultIconStyle} />
               </span>
             </div>
             <input

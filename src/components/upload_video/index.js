@@ -1,7 +1,6 @@
 import React from "react";
 import { useAlert } from "react-alert";
 import axios from "axios";
-import lottie from "lottie-web";
 
 import "../../styles/upload_video.css";
 import { createAPIKit } from "../../utils/APIKit";
@@ -17,6 +16,7 @@ import {
 import Title from "./title";
 import SelectGame from "./select_game";
 import Tags from "./tags";
+import Share from "../share_clip";
 
 const VIDEO_MIN_DURATION = 5;
 const VIDEO_MAX_DURATION = 60;
@@ -38,24 +38,39 @@ class UploadVideo extends React.Component {
     isUploading: false,
     error: "",
     warning: "",
-    showingAnimation: false,
+    post_id: "",
+    showShare: false,
   };
 
-  loadAnimation = () => {
-    const callback = () => {
-      const anim = lottie.loadAnimation({
-        container: this.animationRef.current,
-        path: "/animations/81296-success.json",
-      });
-      anim.setSpeed(0.5);
-      setTimeout(() => {
-        this.setState({ showingAnimation: false }, () => {
-          anim.destroy();
-        });
-      }, 4000);
+  postStatusListener = undefined;
+
+  checkCompressed = async () => {
+    if (this.state.post_id === "") return;
+
+    const onSuccess = (response) => {
+      const { status } = response.data.payload;
+      if (status === null) {
+        // Post doesn't exist
+        clearInterval(this.postStatusListener);
+      } else if (status === true) {
+        // Display post link
+        // Clear interval
+        this.setState({ showShare: true });
+        clearInterval(this.postStatusListener);
+      } else if (status === false) {
+        // Continue
+      }
+      console.log(status);
     };
 
-    this.setState({ showingAnimation: true }, callback);
+    const APIKit = await createAPIKit();
+    APIKit.post(
+      "/feed/post/status/",
+      { post_id: this.state.post_id },
+      { cancelToken: this.cancelTokenSource.token }
+    )
+      .then(onSuccess)
+      .catch((e) => {});
   };
 
   unloadListener = (ev) => {
@@ -142,18 +157,20 @@ class UploadVideo extends React.Component {
       );
 
       if (s3_presigned_response.status === 200) {
-        const url_payload = s3_presigned_response.data.payload;
-        this.setState({ fileKey: url_payload.fields.key });
+        const { url, post_id } = s3_presigned_response.data.payload;
+        this.setState({ post_id, fileKey: url.fields.key });
         try {
           const uploadProgress = (event) => {
             const progress = Math.round((100 * event.loaded) / event.total);
-            // console.log(progress);
             this.setState({ progress });
           };
 
           const uploadSuccess = async () => {
             // Show success animation
-            this.loadAnimation();
+            this.postStatusListener = setInterval(
+              this.checkCompressed,
+              10 * 1000
+            );
 
             APIKit.post(
               "/clips/success/",
@@ -174,16 +191,16 @@ class UploadVideo extends React.Component {
           };
 
           const formData = new FormData();
-          // append the fields in url_payload in formData
-          Object.keys(url_payload.fields).forEach((key) => {
-            formData.append(key, url_payload.fields[key]);
+          // append the fields in url in formData
+          Object.keys(url.fields).forEach((key) => {
+            formData.append(key, url.fields[key]);
           });
 
           // append the file
           formData.append("file", this.props.videoInfo);
 
           axios
-            .post(url_payload.url, formData, {
+            .post(url.url, formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
               },
@@ -243,7 +260,17 @@ class UploadVideo extends React.Component {
         </video>
         <Recaptcha recaptchaRef={this.recaptchaRef} />
         {this.state.isUploading ? (
-          <ProgressBar progress={this.state.progress} />
+          this.state.progress < 100 ? (
+            <ProgressBar progress={this.state.progress} />
+          ) : this.state.showShare ? (
+            <Share
+              title={this.state.title}
+              game_name={this.state.game.name}
+              post_id={this.state.post_id}
+            />
+          ) : (
+            <span>Creating a shareable link...</span>
+          )
         ) : (
           <ButtonsGroup
             disable={this.state.disable}

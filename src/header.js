@@ -1,7 +1,13 @@
 import React from "react";
+import {
+  IoCaretUpOutline,
+  IoCaretDownOutline,
+  IoExitOutline,
+} from "react-icons/io5";
 
 import "./styles/header.css";
 import UserContext from "./userContext";
+import { defaultIconStyle } from "./utils/styles";
 
 const Header = () => {
   const context = React.useContext(UserContext);
@@ -41,10 +47,7 @@ const Header = () => {
               style={{ borderRadius: 20 }}
               alt={user.username}
             />
-            <ion-icon
-              name={isOpen ? "caret-up-outline" : "caret-down-outline"}
-              size="small"
-            ></ion-icon>
+            {isOpen ? <IoCaretUpOutline /> : <IoCaretDownOutline />}
           </div>
           <div
             className={`dropdown-menu${isOpen ? " show" : ""}`}
@@ -54,7 +57,7 @@ const Header = () => {
               className="dropdown-item Header-Dropdown-Item"
               onClick={logoutUser}
             >
-              <ion-icon name="exit-outline"></ion-icon>
+              <IoExitOutline style={defaultIconStyle} />
               <p>Logout</p>
             </span>
           </div>

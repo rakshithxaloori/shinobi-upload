@@ -1,4 +1,6 @@
 import React from "react";
+import { IoAlertCircleOutline } from "react-icons/io5";
+import { defaultIconStyle } from "./utils/styles";
 
 const alertStyle = {
   backgroundColor: "#151515",
@@ -13,7 +15,7 @@ const alertStyle = {
 const AlertTemplate = ({ message, style }) => {
   return (
     <div style={{ ...alertStyle, ...style }}>
-      <ion-icon name="alert-circle-outline"></ion-icon>
+      <IoAlertCircleOutline style={defaultIconStyle} />
       <span>{message}</span>
     </div>
   );
