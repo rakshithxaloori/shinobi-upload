@@ -1,7 +1,6 @@
 import React from "react";
 import { useAlert } from "react-alert";
 import axios from "axios";
-import lottie from "lottie-web";
 
 import "../../styles/upload_video.css";
 import { createAPIKit } from "../../utils/APIKit";

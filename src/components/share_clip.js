@@ -7,6 +7,8 @@ import UserContext from "../userContext";
 const SOCIALS_ICON_SIZE = 30;
 const CLIPBOARD_ICON_SIZE = 26;
 
+const FB_APP_ID = process.env.REACT_APP_FACEBOOK_APP_ID;
+
 const Share = ({ title, game_name, post_id }) => {
   const context = React.useContext(UserContext);
   const { user } = context;
@@ -15,7 +17,7 @@ const Share = ({ title, game_name, post_id }) => {
 
   const shinobi_url = `https://shinobi.cc/clip/${post_id}`;
 
-  // REFERENCE https://developers.facebook.com/docs/sharing/reference/share-dialog
+  const facebook_text = `A ${game_name} clip by ${user?.username} | Shinobi`;
 
   const reddit_title = title;
   const reddit_text = `${user?.username} | Shinobi\n${shinobi_url}`;
@@ -78,7 +80,9 @@ const Share = ({ title, game_name, post_id }) => {
         }}
       >
         <a
-          href="https://facebook.com"
+          href={`https://www.facebook.com/sharer/sharer.php?app_id=${FB_APP_ID}&u=${encodeURI(
+            shinobi_url
+          )}&quote=${encodeURI(facebook_text)}`}
           rel="noopener noreferrer"
           target="_blank"
           style={styles.icon}
