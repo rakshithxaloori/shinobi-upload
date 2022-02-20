@@ -65,12 +65,13 @@ const SelectGame = ({ game, setGame, disable, setError }) => {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       {game ? (
         <div
           style={{
             display: "flex",
             flexDirection: "row",
+            width: "100%",
             alignItems: "center",
             position: "relative",
             borderRadius: 10,
