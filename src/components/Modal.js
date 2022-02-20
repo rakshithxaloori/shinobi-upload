@@ -1,4 +1,6 @@
+import { IoClose } from "react-icons/io5";
 import "../styles/modal.css";
+import { defaultIconStyle } from "../utils/styles";
 
 const Modal = ({ title, handleClose, show, children }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
@@ -6,14 +8,26 @@ const Modal = ({ title, handleClose, show, children }) => {
   return (
     <div className={showHideClassName}>
       <section className="modal-main">
-        <span style={{ fontWeight: "bold", fontSize: 20 }}>{title}</span>
-        <span
-          style={{ position: "absolute", top: 20, right: 20 }}
-          onClick={handleClose}
+        <section
+          style={{
+            width: "100%",
+          }}
         >
-          <ion-icon name="close"></ion-icon>
-        </span>
-        <div style={{ marginTop: 40 }}>{children}</div>
+          <span style={{ fontWeight: "bold", fontSize: 20 }}>{title}</span>
+          <span
+            style={{ position: "absolute", right: 20, top: 20 }}
+            onClick={handleClose}
+          >
+            <IoClose style={defaultIconStyle} />
+          </span>
+        </section>
+        <div
+          style={{
+            marginTop: 40,
+          }}
+        >
+          {children}
+        </div>
       </section>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import { useAlert } from "react-alert";
+import { IoCloseCircle, IoPricetag } from "react-icons/io5";
 import axios from "axios";
 
 import Modal from "../Modal";
@@ -7,6 +8,7 @@ import Modal from "../Modal";
 import { createAPIKit } from "../../utils/APIKit";
 import { handleAPIError } from "../../utils/error";
 import { VIDEO_WIDTH } from "../../utils";
+import { defaultIconStyle } from "../../utils/styles";
 
 const PICTURE_SIZE = 30;
 
@@ -94,7 +96,7 @@ const Tags = ({ tags, setTags, disable }) => {
           }}
           onClick={() => setShowModal(true)}
         >
-          <ion-icon name="pricetag" size="small"></ion-icon>
+          <IoPricetag style={defaultIconStyle} />
           <span onClick={() => {}}>
             Tagged {tags[0].username}{" "}
             {tags.length > 1 && `${tags.length - 1} others`}
@@ -104,7 +106,7 @@ const Tags = ({ tags, setTags, disable }) => {
       <div className="input-group mb-3">
         <div className="input-group-prepend">
           <span className="input-group-text">
-            <ion-icon name="pricetag-outline"></ion-icon>
+            <IoPricetag style={defaultIconStyle} />
           </span>
         </div>
         <input
@@ -196,7 +198,7 @@ const Tag = ({ tag, removeTag }) => {
           removeTag(tag);
         }}
       >
-        <ion-icon name="close-circle"></ion-icon>
+        <IoCloseCircle style={defaultIconStyle} />
       </span>
     </span>
   );

@@ -1,6 +1,8 @@
 import React from "react";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 import { POST_TITLE_LENGTH, VIDEO_WIDTH } from "../../utils";
+import { defaultIconStyle } from "../../utils/styles";
 
 const Title = ({ title, setTitle, disable }) => {
   const defInputStyle = { width: VIDEO_WIDTH - 100 };
@@ -24,7 +26,7 @@ const Title = ({ title, setTitle, disable }) => {
       <div className="input-group mb-3" style={{ marginTop: 40 }}>
         <div className="input-group-prepend">
           <span className="input-group-text">
-            <ion-icon name="document-text-outline"></ion-icon>
+            <IoDocumentTextOutline style={defaultIconStyle} />
           </span>
         </div>
         <input

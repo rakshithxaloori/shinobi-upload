@@ -1,6 +1,8 @@
 import React from "react";
+import { IoLogoDiscord, IoLogoReddit } from "react-icons/io5";
 
 import "./styles/footer.css";
+const ICON_SIZE = 24;
 
 const Footer = () => (
   <div className="Footer">
@@ -39,7 +41,7 @@ const Footer = () => (
             target="_blank"
             href="https://www.reddit.com/r/ShinobiApp/"
           >
-            <ion-icon name="logo-reddit" />
+            <IoLogoReddit size={ICON_SIZE} />
             <span style={{ marginLeft: "10px" }}>Reddit</span>
           </a>
           <a
@@ -48,7 +50,7 @@ const Footer = () => (
             target="_blank"
             href={process.env.REACT_APP_DISCORD_INVITE_LINK}
           >
-            <ion-icon name="logo-discord" />
+            <IoLogoDiscord size={ICON_SIZE} />
             <span style={{ marginLeft: "10px" }}>Discord</span>
           </a>
         </div>

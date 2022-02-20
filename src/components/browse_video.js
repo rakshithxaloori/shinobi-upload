@@ -1,7 +1,9 @@
 import React from "react";
+import { IoAlbumsOutline } from "react-icons/io5";
 
 import "../styles/browse_video.css";
 import { VIDEO_MIME_TYPES } from "../utils";
+import { defaultIconStyle } from "../utils/styles";
 
 const BrowseVideo = ({ setVideoInfo }) => {
   const [disable, setDisable] = React.useState(false);
@@ -27,7 +29,7 @@ const BrowseVideo = ({ setVideoInfo }) => {
   return (
     <div className="Browse">
       <button className="Browse-btn" onClick={handleClick} disabled={disable}>
-        <ion-icon name="albums-outline"></ion-icon>
+        <IoAlbumsOutline style={defaultIconStyle} />
         <p className="Browse-btn-txt">Select a clip</p>
       </button>
       <input
